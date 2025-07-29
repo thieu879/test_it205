@@ -19,5 +19,6 @@ public class JWTResponse {
     private String phone;
     private Boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
+    private Boolean isLogin;
     private String token;
 }

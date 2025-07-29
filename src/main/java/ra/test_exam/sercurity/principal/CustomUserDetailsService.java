@@ -28,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .status(user.getStatus())
-                .isLogin(user.getIsLogin())
                 .authorities(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")))
                 .build();
     }

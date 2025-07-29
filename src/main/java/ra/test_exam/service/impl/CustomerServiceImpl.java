@@ -64,14 +64,22 @@ public class CustomerServiceImpl implements CustomerService {
                 .email(userDetails.getEmail())
                 .phone(userDetails.getPhone())
                 .authorities(userDetails.getAuthorities())
+                .isLogin(true)
                 .token(token)
                 .build();
     }
 
     @Override
     public JWTResponse logout() {
-        return null;
+        return JWTResponse.builder()
+                .isLogin(false)
+                .token(null)
+                .username(null)
+                .fullName(null)
+                .email(null)
+                .phone(null)
+                .enabled(false)
+                .authorities(null)
+                .build();
     }
-
-
 }

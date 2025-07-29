@@ -31,4 +31,9 @@ public class CustomerController {
         return new ResponseEntity<>(new APIResponse<>(true,"Login successfully!",customerService.login(userLogin), HttpStatus.OK),HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<APIResponse> logout() {
+        JWTResponse response = customerService.logout();
+        return new ResponseEntity<>(new APIResponse<>(true,"Logout successfully!",response, HttpStatus.OK),HttpStatus.OK);
+    }
 }

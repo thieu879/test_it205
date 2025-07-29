@@ -20,7 +20,6 @@ public class CustomUserDetails implements UserDetails {
     private String address;
     private String email;
     private String phone;
-    private boolean isLogin;
     private Boolean status;
     private Collection<? extends GrantedAuthority> authorities ;
 
