@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -71,13 +72,32 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public JWTResponse logout() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            return JWTResponse.builder()
+                    .isLogin(false)
+                    .token(null)
+                    .username(null)
+                    .fullName(null)
+                    .email(null)
+                    .phone(null)
+                    .enabled(false)
+                    .authorities(null)
+                    .build();
+        }
+        String username = authentication.getName();
+        Customer customer = customerRepository.findCustomerByUsername(username).orElse(null);
+        if (customer != null) {
+            customer.setIsLogin(false);
+            customerRepository.save(customer);
+        }
         return JWTResponse.builder()
                 .isLogin(false)
                 .token(null)
-                .username(null)
-                .fullName(null)
-                .email(null)
-                .phone(null)
+                .username(username)
+                .fullName(customer != null ? customer.getFullName() : null)
+                .email(customer != null ? customer.getEmail() : null)
+                .phone(customer != null ? customer.getPhone() : null)
                 .enabled(false)
                 .authorities(null)
                 .build();
